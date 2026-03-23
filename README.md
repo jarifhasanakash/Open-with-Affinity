@@ -1,38 +1,76 @@
 # Edit in Affinity - Figma Plugin
 
-This plugin allows you to edit images from Figma directly in Affinity Photo (or Designer) and automatically syncs the changes back to Figma when you save.
+A bridge between Figma and the Affinity v3. This plugin allows you to edit images from Figma directly in Affinity and automatically syncs the changes back to Figma when you save.
 
-## Setup Instructions
+---
 
-### 1. Start the Local Bridge
-The plugin needs a local bridge server to interact with your filesystem and open Affinity.
+## ✨ Features
+- **One-Click Edit**: Open any Figma image layer directly in Affinity.
+- **Automatic Sync**: Save in Affinity, and the image in Figma updates instantly.
+- **Cross-Platform**: Full support for both **Windows** and **macOS**.
+- **Versatile**: Works with Affinity Photo, Designer, and Publisher (V1 & V2).
 
-1. Open a terminal (Command Prompt, PowerShell, or Git Bash).
-2. Navigate to the `bridge` folder:
-   ```cmd
-   cd "e:\Other\Antigravity\Open with Affinity\dev\bridge"
-   ```
-3. Start the server:
-   ```cmd
-   node index.js
-   ```
-   *Note: You should see "Bridge server running at http://localhost:3456". Keep this window open.*
+---
 
-### 2. Load the Plugin in Figma
-1. Open the Figma Desktop App.
-2. Go to **Plugins > Development > Import plugin from manifest...**.
-3. Select the `manifest.json` file located in:
-   `e:\Other\Antigravity\Open with Affinity\dev\plugin\manifest.json`
+## 🛠️ Requirements
+- **Node.js** (v14 or higher) - [Download here](https://nodejs.org/)
+- **Figma Desktop App** (Plugin development requires the desktop version)
+- **Affinity Software** (v3) - [Download here](https://www.affinity.studio/download)
 
-### 3. Usage
-1. Select an image or a shape with an image fill in Figma.
-2. Right-click and go to **Plugins > Development > Edit in Affinity**.
-3. Click the **"Edit in Affinity"** button in the plugin window.
-4. Affinity will open with your image.
-5. **Edit the image and Save (Ctrl+S)** in Affinity.
-6. The image in Figma will update automatically!
+---
 
-## Troubleshooting
-- **Bridge not connecting**: Ensure you ran `node index.js` in the `bridge` folder.
-- **Affinity doesn't open**: I've pre-configured common paths for Affinity Photo 1/2 and Designer 1/2. If it still doesn't open, ensure Affinity is installed in the default `C:\Program Files\Affinity` location.
-- **Image doesn't update**: Make sure you "Save" the file in Affinity, not just "Export". The bridge watches for file changes on the temporary file created.
+## 🚀 Installation & Setup
+
+### 1. Set Up the Local Bridge
+The plugin requires a small "bridge" server running on your computer to handle file operations that Figma's sandbox doesn't allow.
+
+1.  **Open your Terminal** (Terminal on Mac, PowerShell or Command Prompt on Windows).
+2.  **Navigate to the bridge directory** in this project:
+    ```bash
+    cd "path/to/folder/bridge"
+    ```
+3.  **Install dependencies**:
+    ```bash
+    npm install
+    ```
+4.  **Start the server**:
+    ```bash
+    npm start
+    ```
+    *Keep this terminal window open while using the plugin.*
+
+### 2. Install the Plugin in Figma
+1.  Open the **Figma Desktop App**.
+2.  Right-click anywhere or go to the main menu and select **Plugins > Development > Import plugin from manifest...**.
+3.  Select the `manifest.json` file located in the `plugin` folder of this project.
+
+---
+
+## 🎨 How to Use
+1.  **Select an image layer** (or a shape with an image fill) in Figma.
+2.  Run the plugin: **Plugins > Development > Edit in Affinity**.
+3.  Click the **"Edit in Affinity"** button.
+4.  Your image will open automatically in Affinity.
+5.  **Edit the image and Save (Ctrl+S / Cmd+S)**.
+6.  The image in Figma will update immediately!
+
+---
+
+## 💻 Platform Notes
+
+### 🪟 Windows
+- The bridge searches common installation paths in `C:\Program Files\Affinity`.
+- If you have an unconventional setup, ensure the Affinity executable is in your system PATH.
+
+### 🍎 macOS
+- The bridge looks for Affinity apps in your `/Applications` folder.
+- Depending on your security settings, you may need to grant the Terminal "Full Disk Access" if the bridge cannot write to the temporary directory.
+
+---
+
+## ❓ Troubleshooting
+- **"Bridge not connected"**: Ensure `npm start` is running in the terminal and you see the message "Bridge server running".
+- **Affinity doesn't open**: 
+    - Ensure Affinity is installed in the default location.
+    - If it still won't open, the bridge will attempt to use your system's default image editor as a fallback.
+- **Image doesn't update**: You must **Save** the file in Affinity. Do not use "Export," as that creates a new file instead of overwriting the temporary one the bridge is watching.
