@@ -14,7 +14,7 @@ A bridge between Figma and the Affinity v3. This plugin allows you to edit image
 
 ## 🛠️ Requirements
 - **Node.js** (v14 or higher) - [Download here](https://nodejs.org/)
-- **Figma Desktop App** (Plugin development requires the desktop version)
+- **Figma Desktop App** (Plugin development requires the desktop version) - [Download here](https://www.figma.com/downloads/)
 - **Affinity Software** (v3) - [Download here](https://www.affinity.studio/download)
 
 ---
