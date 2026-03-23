@@ -58,6 +58,7 @@ The plugin requires a small "bridge" server running on your computer to handle f
 3.  Click the **"Edit in Affinity"** button.
 4.  Your image will open automatically in Affinity.
 5.  **Edit the image and Save (Ctrl+S / Cmd+S)**.
+    - If prompted, click the **"Save Flattened"** button. This ensures your changes are written back to the temporary file the bridge is watching.
 6.  The image in Figma will update immediately!
 
 ---
