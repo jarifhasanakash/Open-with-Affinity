@@ -1,0 +1,14 @@
+{
+  "name": "Edit in Affinity",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "dist/ui.html",
+  "editorType": ["figma"],
+  "capabilities": [],
+  "permissions": [],
+  "networkAccess": {
+    "allowedDomains": ["http://localhost:3456", "ws://localhost:3456"],
+    "devAllowedDomains": ["http://localhost:3456", "ws://localhost:3456"],
+    "reasoning": "The plugin needs to connect to a local Node.js server to transfer image data to and from Affinity Photo/Designer."
+  }
+}

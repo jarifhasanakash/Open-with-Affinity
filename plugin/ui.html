@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #1e1e1e;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            text-align: center;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        .container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        h2 {
+            font-weight: 600;
+            margin: 10px 0 20px 0;
+            font-size: 18px;
+            color: #fff;
+        }
+        .status {
+            font-size: 12px;
+            color: #aaa;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #ff4b4b;
+        }
+        .status-dot.connected {
+            background-color: #00ff88;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+        button {
+            background: #a7f175;
+            color: #1e1e1e;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(167, 241, 117, 0.3);
+        }
+        button:hover {
+            transform: translateY(-2px);
+            background: #b5f58c;
+            box-shadow: 0 6px 20px rgba(167, 241, 117, 0.4);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        button:disabled {
+            background: #444;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+        .info {
+            margin-top: 24px;
+            font-size: 11px;
+            color: #777;
+            line-height: 1.6;
+            text-align: center;
+        }
+        .loader {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff33;
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            font-size: 10px;
+            color: #555;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            border-top: 1px solid #333;
+            padding: 10px 0;
+            background-color: #1e1e1e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="loader" id="loader"></div>
+        
+        <h2>Edit in Affinity</h2>
+        
+        <div class="status">
+            <div id="status-dot" class="status-dot"></div>
+            <span id="status-text">Connecting to Bridge...</span>
+        </div>
+
+        <button id="edit-btn" disabled>Edit in Affinity</button>
+
+        <div class="info">
+            1. Make sure the Bridge Server is running.<br>
+            2. Select an image in Figma.<br>
+            3. Click "Edit in Affinity".<br>
+            4. Save in Affinity to sync back.
+        </div>
+
+        <div class="footer">
+            <span>By Jarif Hasan Akash</span>
+            <span>v0.1</span>
+        </div>
+    </div>
+
+    <script>
+        let socket;
+        const statusDot = document.getElementById('status-dot');
+        const statusText = document.getElementById('status-text');
+        const editBtn = document.getElementById('edit-btn');
+        const loader = document.getElementById('loader');
+
+        function connect() {
+            socket = new WebSocket('ws://localhost:3456');
+
+            socket.onopen = () => {
+                statusDot.classList.add('connected');
+                statusText.innerText = 'Bridge Connected';
+                editBtn.disabled = false;
+            };
+
+            socket.onclose = () => {
+                statusDot.classList.remove('connected');
+                statusText.innerText = 'Bridge Disconnected';
+                editBtn.disabled = true;
+                setTimeout(connect, 2000);
+            };
+
+            socket.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                if (data.type === 'image-updated') {
+                    const binaryString = window.atob(data.base64);
+                    const len = binaryString.length;
+                    const bytes = new Uint8Array(len);
+                    for (let i = 0; i < len; i++) {
+                        bytes[i] = binaryString.charCodeAt(i);
+                    }
+                    parent.postMessage({ pluginMessage: { type: 'update-image', bytes } }, '*');
+                    loader.style.display = 'none';
+                }
+            };
+        }
+
+        connect();
+
+        editBtn.onclick = () => {
+            parent.postMessage({ pluginMessage: { type: 'get-selection' } }, '*');
+        };
+
+        window.onmessage = (event) => {
+            const msg = event.data.pluginMessage;
+            if (msg.type === 'image-data') {
+                loader.style.display = 'block';
+                const base64 = btoa(new Uint8Array(msg.bytes).reduce((data, byte) => data + String.fromCharCode(byte), ''));
+                socket.send(JSON.stringify({
+                    type: 'edit-image',
+                    fileName: msg.fileName,
+                    base64: base64
+                }));
+            }
+        };
+    </script>
+</body>
+</html>

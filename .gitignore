@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+.env
+.idea/
+.vscode/
+bridge/node_modules/
+plugin/node_modules/
+plugin/dist/
