@@ -8,7 +8,7 @@ A bridge between Figma and the Affinity v3. This plugin allows you to edit image
 - **One-Click Edit**: Open any Figma image layer directly in Affinity.
 - **Automatic Sync**: Save in Affinity, and the image in Figma updates instantly.
 - **Cross-Platform**: Full support for both **Windows** and **macOS**.
-- **Versatile**: Works with Affinity Photo, Designer, and Publisher (V1 & V2).
+- **Versatile**: Works with Affinity Photo, Designer, and Publisher (V1, V2, and V3).
 
 ---
 
@@ -30,7 +30,7 @@ The plugin requires a small "bridge" server running on your computer to handle f
 1.  **Open your Terminal** (Terminal on Mac, PowerShell or Command Prompt on Windows).
 2.  **Navigate to the bridge directory** in this project:
     ```bash
-    cd "path/to/folder/bridge"
+    cd bridge
     ```
 3.  **Install dependencies**:
     ```bash
