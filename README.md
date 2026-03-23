@@ -22,7 +22,10 @@ A bridge between Figma and the Affinity v3. This plugin allows you to edit image
 ## 🚀 Installation & Setup
 
 ### 1. Set Up the Local Bridge
-The plugin requires a small "bridge" server running on your computer to handle file operations that Figma's sandbox doesn't allow.
+The plugin requires a small "bridge" server running on your computer to handle file operations that Figma's sandbox doesn't allow. 
+
+> [!NOTE]
+> The `node_modules` folder is NOT included in the GitHub repository to keep it lightweight. You **must** run the installation steps below to generate it on your machine.
 
 1.  **Open your Terminal** (Terminal on Mac, PowerShell or Command Prompt on Windows).
 2.  **Navigate to the bridge directory** in this project:
@@ -34,10 +37,13 @@ The plugin requires a small "bridge" server running on your computer to handle f
     npm install
     ```
 4.  **Start the server**:
-    ```bash
-    npm start
-    ```
-    *Keep this terminal window open while using the plugin.*
+    - **Option A (Visible Log)**:
+      ```bash
+      npm start
+      ```
+      *Keep this terminal window open while using the plugin.*
+    - **Option B (Hidden - Windows Only)**: 
+      Double-click `start_bridge_hidden.vbs` in the root folder. This will start the bridge server silently in the background without a terminal window.
 
 ### 2. Install the Plugin in Figma
 1.  Open the **Figma Desktop App**.
